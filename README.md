@@ -1,3 +1,6 @@
+CREATE TABLE transactions (id varchar(81), ts datetime, value bigint, 
+                           address varchar(81), PRIMARY KEY (id), KEY (address), KEY (ts));
+
 #or http://176.9.3.149:14265
 # 1.4.1.2
 # 1.4.1.4

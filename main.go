@@ -3,43 +3,59 @@ package main
 import "fmt"
 import "github.com/iotaledger/giota"
 
-func bar(bundle giota.Trytes, api *giota.API) {
+func findTx(bundle giota.Trytes, trunk giota.Trytes, branch giota.Trytes, address giota.Trytes, api *giota.API) {
 	fmt.Println("bar", bundle)
-	ftr := &giota.FindTransactionsRequest{Bundles: []giota.Trytes{bundle}}
+
+	aa, _ := address.ToAddress()
+	tt, _ := trunk.ToAddress()
+	bb, _ := branch.ToAddress()
+
+	ftr := &giota.FindTransactionsRequest{Approvees: []giota.Trytes{address},
+		Addresses: []giota.Address{aa, tt, bb},
+		Bundles:   []giota.Trytes{bundle}}
+
 	resp, err := api.FindTransactions(ftr)
 	if err == nil {
 		for i, h := range resp.Hashes {
-			foo(i, h, api)
+			//*/foo(i, h, api)
+			fmt.Println(i, h)
 		}
 	}
 }
 
-func foo(i int, t giota.Trytes, api *giota.API) {
-	fmt.Println("foo", i, t)
+func loadMilestone(i int, t giota.Trytes, api *giota.API) {
+	fmt.Println("loadMilestone", i, t)
 	resp, err := api.GetTrytes([]giota.Trytes{t})
 	if err == nil {
-		tx := resp.Trytes[0]
+		for i, tx := range resp.Trytes {
+			fmt.Println(i)
+			fmt.Println(tx.Bundle)
+			fmt.Println(tx.TrunkTransaction)
+			fmt.Println(tx.BranchTransaction)
+			fmt.Println(tx.Address)
+		}
+		//tx := resp.Trytes[0]
 		//fmt.Println("Address")
 		//fmt.Println(tx.Address)
 		//fmt.Println("Value")
 		//fmt.Println(tx.Value)
-		fmt.Println("Timestamp")
-		fmt.Println(tx.Timestamp)
+		//fmt.Println("Timestamp")
+		//fmt.Println(tx.Timestamp)
 		//fmt.Println("TrunkTransaction")
 		//fmt.Println(tx.TrunkTransaction)
 		//fmt.Println("AttachmentTimestamp")
 		//fmt.Println(tx.AttachmentTimestamp)
-		fmt.Println("Bundle")
-		fmt.Println(tx.Bundle)
+		//fmt.Println("Bundle")
+		//fmt.Println(tx.Bundle)
 		//fmt.Println("Tag")
 		//fmt.Println(tx.Tag)
 		//fmt.Println("CurrentIndex")
 		//fmt.Println(tx.CurrentIndex)
 		//fmt.Println("LastIndex")
 		//fmt.Println(tx.LastIndex)
-		//foo(tx.TrunkTransaction, api)
-		//foo(tx.BranchTransaction, api)
-		bar(tx.Bundle, api)
+		//foo(0, tx.TrunkTransaction, api)
+		//foo(0, tx.BranchTransaction, api)
+		//bar(tx.Bundle, api)
 	}
 }
 
@@ -49,7 +65,7 @@ func main() {
 	api := giota.NewAPI(server, nil)
 	resp, err := api.GetNodeInfo()
 	if err == nil {
-		foo(0, resp.LatestMilestone, api)
+		loadMilestone(0, resp.LatestMilestone, api)
 	}
 }
 

@@ -30,10 +30,11 @@ func main() {
 		resp, err := api.GetTrytes([]giota.Trytes{t})
 		if err == nil {
 			seen = append(seen, tofetch)
-			for i, tx := range resp.Trytes {
-				fmt.Println(i)
-				//fmt.Println(tx.TrunkTransaction)
-				//fmt.Println(tx.BranchTransaction)
+			for _, tx := range resp.Trytes {
+				//fmt.Println(i)
+				fmt.Println(tx.AttachmentTimestamp, tx.Value, tx.Timestamp)
+				//fmt.Println(tx.Timestamp)
+				//fmt.Println(tx.AttachmentTimestamp)
 
 				trunk := string(tx.TrunkTransaction)
 				branch := string(tx.BranchTransaction)
@@ -71,7 +72,7 @@ func main() {
 				if !contains_seen && !contains_unseen {
 					unseen = append(unseen, branch)
 				}
-				//fmt.Println(seen, unseen)
+				//fmt.Println(len(seen), len(unseen))
 
 			}
 		}

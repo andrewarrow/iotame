@@ -3,24 +3,43 @@ package main
 import "fmt"
 import "github.com/iotaledger/giota"
 
-func foo(t giota.Trytes, api *giota.API) {
-	fmt.Println(t)
+func bar(bundle giota.Trytes, api *giota.API) {
+	fmt.Println("bar", bundle)
+	ftr := &giota.FindTransactionsRequest{Bundles: []giota.Trytes{bundle}}
+	resp, err := api.FindTransactions(ftr)
+	if err == nil {
+		for i, h := range resp.Hashes {
+			foo(i, h, api)
+		}
+	}
+}
+
+func foo(i int, t giota.Trytes, api *giota.API) {
+	fmt.Println("foo", i, t)
 	resp, err := api.GetTrytes([]giota.Trytes{t})
 	if err == nil {
 		tx := resp.Trytes[0]
-		fmt.Println("Address")
-		fmt.Println(tx.Address)
-		fmt.Println("Value")
-		fmt.Println(tx.Value)
+		//fmt.Println("Address")
+		//fmt.Println(tx.Address)
+		//fmt.Println("Value")
+		//fmt.Println(tx.Value)
 		fmt.Println("Timestamp")
 		fmt.Println(tx.Timestamp)
-		fmt.Println("TrunkTransaction")
-		fmt.Println(tx.TrunkTransaction)
-		fmt.Println("AttachmentTimestamp")
-		fmt.Println(tx.AttachmentTimestamp)
+		//fmt.Println("TrunkTransaction")
+		//fmt.Println(tx.TrunkTransaction)
+		//fmt.Println("AttachmentTimestamp")
+		//fmt.Println(tx.AttachmentTimestamp)
 		fmt.Println("Bundle")
 		fmt.Println(tx.Bundle)
-		foo(tx.TrunkTransaction, api)
+		//fmt.Println("Tag")
+		//fmt.Println(tx.Tag)
+		//fmt.Println("CurrentIndex")
+		//fmt.Println(tx.CurrentIndex)
+		//fmt.Println("LastIndex")
+		//fmt.Println(tx.LastIndex)
+		//foo(tx.TrunkTransaction, api)
+		//foo(tx.BranchTransaction, api)
+		bar(tx.Bundle, api)
 	}
 }
 
@@ -30,7 +49,7 @@ func main() {
 	api := giota.NewAPI(server, nil)
 	resp, err := api.GetNodeInfo()
 	if err == nil {
-		foo(resp.LatestMilestone, api)
+		foo(0, resp.LatestMilestone, api)
 	}
 }
 

@@ -15,12 +15,15 @@ func main() {
 		unseen = append(unseen, string(resp.LatestSolidSubtangleMilestone))
 	}
 
+	x := 0
 	for {
 		if len(unseen) == 0 {
 			break
 		}
 		//tofetch = get_and_remove_first(unseen)
 		tofetch := unseen[0]
+		fmt.Println(x, tofetch)
+		x = x + 1
 		unseen = unseen[1:len(unseen)]
 
 		t, _ := giota.ToTrytes(tofetch)
@@ -29,8 +32,8 @@ func main() {
 			seen = append(seen, tofetch)
 			for i, tx := range resp.Trytes {
 				fmt.Println(i)
-				fmt.Println(tx.TrunkTransaction)
-				fmt.Println(tx.BranchTransaction)
+				//fmt.Println(tx.TrunkTransaction)
+				//fmt.Println(tx.BranchTransaction)
 
 				trunk := string(tx.TrunkTransaction)
 				branch := string(tx.BranchTransaction)
@@ -49,7 +52,7 @@ func main() {
 					}
 				}
 				if !contains_seen && !contains_unseen {
-					unseen = append(seen, trunk)
+					unseen = append(unseen, trunk)
 				}
 				contains_seen = false
 				for _, s := range seen {
@@ -66,8 +69,9 @@ func main() {
 					}
 				}
 				if !contains_seen && !contains_unseen {
-					unseen = append(seen, branch)
+					unseen = append(unseen, branch)
 				}
+				//fmt.Println(seen, unseen)
 
 			}
 		}

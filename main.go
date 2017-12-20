@@ -3,6 +3,22 @@ package main
 import "fmt"
 import "github.com/iotaledger/giota"
 
+var seen []string = []string{"999999999999999999999999999999999999999999999999999999999999999999999999999999999"}
+var unseen []string = []string{}
+
+func main() {
+	server := "http://iota.bitfinex.com:80"
+	server = "http://176.9.3.149:14265"
+	api := giota.NewAPI(server, nil)
+	resp, err := api.GetNodeInfo()
+	if err == nil {
+		unseen = append(unseen, string(resp.LatestSolidSubtangleMilestone))
+	}
+
+	fmt.Println(seen, unseen)
+}
+
+/*
 func findTx(bundle giota.Trytes, trunk giota.Trytes, branch giota.Trytes, address giota.Trytes, api *giota.API) {
 	fmt.Println("bar", bundle)
 
@@ -11,17 +27,17 @@ func findTx(bundle giota.Trytes, trunk giota.Trytes, branch giota.Trytes, addres
 	bb, _ := branch.ToAddress()
 
 	ftr := &giota.FindTransactionsRequest{Approvees: []giota.Trytes{address},
-		Addresses: []giota.Address{aa, tt, bb},
+		Addresses: []giota.Address{address, tt, bb},
 		Bundles:   []giota.Trytes{bundle}}
 
 	resp, err := api.FindTransactions(ftr)
 	if err == nil {
 		for i, h := range resp.Hashes {
-			//*/foo(i, h, api)
+			//foo(i, h, api)
 			fmt.Println(i, h)
 		}
 	}
-}
+}*/
 
 func loadMilestone(i int, t giota.Trytes, api *giota.API) {
 	fmt.Println("loadMilestone", i, t)
@@ -33,6 +49,7 @@ func loadMilestone(i int, t giota.Trytes, api *giota.API) {
 			fmt.Println(tx.TrunkTransaction)
 			fmt.Println(tx.BranchTransaction)
 			fmt.Println(tx.Address)
+			//findTx(tx.Bundle, tx.TrunkTransaction, tx.BranchTransaction, tx.Address, api)
 		}
 		//tx := resp.Trytes[0]
 		//fmt.Println("Address")
@@ -56,16 +73,6 @@ func loadMilestone(i int, t giota.Trytes, api *giota.API) {
 		//foo(0, tx.TrunkTransaction, api)
 		//foo(0, tx.BranchTransaction, api)
 		//bar(tx.Bundle, api)
-	}
-}
-
-func main() {
-	server := "http://iota.bitfinex.com:80"
-	server = "http://176.9.3.149:14265"
-	api := giota.NewAPI(server, nil)
-	resp, err := api.GetNodeInfo()
-	if err == nil {
-		loadMilestone(0, resp.LatestMilestone, api)
 	}
 }
 

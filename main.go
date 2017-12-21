@@ -11,7 +11,7 @@ var unseen []string = []string{}
 
 func InsertTx(id string, ts time.Time, value int64, address string) {
 
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/iotame?timeout=5s")
+	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/iotame?timeout=5s")
 	if err != nil {
 		return
 	}
@@ -27,9 +27,10 @@ func follow(node string, api *giota.API) {
 	resp, err := api.GetTrytes([]giota.Trytes{t})
 	if err == nil {
 		for _, tx := range resp.Trytes {
+			InsertTx(node, tx.Timestamp, tx.Value, string(tx.Address))
 			trunk := string(tx.TrunkTransaction)
 			branch := string(tx.BranchTransaction)
-			fmt.Println(trunk)
+			fmt.Println(tx.Timestamp)
 			follow(trunk, api)
 			follow(branch, api)
 		}
@@ -40,10 +41,11 @@ func main() {
 	server := "http://iota.bitfinex.com:80"
 	server = "http://176.9.3.149:14265"
 	api := giota.NewAPI(server, nil)
-	resp, err := api.GetNodeInfo()
+	resp, err := api.GetTips()
 	if err == nil {
-		node := string(resp.LatestSolidSubtangleMilestone)
-		follow(node, api)
+		for _, h := range resp.Hashes {
+			follow(string(h), api)
+		}
 	}
 }
 

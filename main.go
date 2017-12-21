@@ -22,7 +22,32 @@ func InsertTx(id string, ts time.Time, value int64, address string) {
 	defer statement.Close()
 }
 
+func follow(node string, api *giota.API) {
+	t, _ := giota.ToTrytes(node)
+	resp, err := api.GetTrytes([]giota.Trytes{t})
+	if err == nil {
+		for _, tx := range resp.Trytes {
+			trunk := string(tx.TrunkTransaction)
+			branch := string(tx.BranchTransaction)
+			fmt.Println(trunk)
+			follow(trunk, api)
+			follow(branch, api)
+		}
+	}
+}
+
 func main() {
+	server := "http://iota.bitfinex.com:80"
+	server = "http://176.9.3.149:14265"
+	api := giota.NewAPI(server, nil)
+	resp, err := api.GetNodeInfo()
+	if err == nil {
+		node := string(resp.LatestSolidSubtangleMilestone)
+		follow(node, api)
+	}
+}
+
+func main2() {
 	server := "http://iota.bitfinex.com:80"
 	server = "http://176.9.3.149:14265"
 	api := giota.NewAPI(server, nil)

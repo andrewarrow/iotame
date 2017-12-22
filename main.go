@@ -35,6 +35,26 @@ func InsertNode(id string, connectionType string) {
 	defer statement.Close()
 }
 
+func ListNodes() []string {
+
+	var list []string = []string{}
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/iotame?timeout=5s")
+	if err != nil {
+		return list
+	}
+	defer db.Close()
+
+	rows, _ := db.Query("select id,connection_type from nodes;")
+	var id string
+	var connectionType string
+	for rows.Next() {
+		rows.Scan(&id, &connectionType)
+		list = append(list, fmt.Sprintf("http://%s", id))
+	}
+	defer rows.Close()
+	return list
+}
+
 func follow(node string, api *giota.API) {
 	t, _ := giota.ToTrytes(node)
 	resp, err := api.GetTrytes([]giota.Trytes{t})
@@ -51,6 +71,12 @@ func follow(node string, api *giota.API) {
 }
 
 func main() {
+	for _, n := range ListNodes() {
+		fmt.Println(n)
+	}
+}
+
+func main22() {
 	server := "http://iota.bitfinex.com:80"
 	//server = "http://176.9.3.149:14265"
 	server = "https://iotanode.us:443"

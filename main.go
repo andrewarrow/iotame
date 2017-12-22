@@ -12,9 +12,8 @@ import "github.com/andrewarrow/iotame/sql"
 
 func main() {
 	for _, node := range sql.Nodes() {
-		fmt.Println("i", node)
+		client.Connect(node)
 	}
-	client.Connect("")
 }
 
 /*

@@ -8,9 +8,12 @@ import "fmt"
 //import _ "github.com/go-sql-driver/mysql"
 //import "strings"
 import "github.com/andrewarrow/iotame/client"
+import "github.com/andrewarrow/iotame/sql"
 
 func main() {
-	fmt.Println("i")
+	for _, node := range sql.Nodes() {
+		fmt.Println("i", node)
+	}
 	client.Connect("")
 }
 

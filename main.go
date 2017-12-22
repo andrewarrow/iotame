@@ -1,12 +1,20 @@
 package main
 
 import "fmt"
-import "github.com/iotaledger/giota"
-import "database/sql"
-import "time"
-import _ "github.com/go-sql-driver/mysql"
-import "strings"
 
+//import "github.com/iotaledger/giota"
+//import "database/sql"
+//import "time"
+//import _ "github.com/go-sql-driver/mysql"
+//import "strings"
+import "github.com/andrewarrow/iotame/client"
+
+func main() {
+	fmt.Println("i")
+	client.Connect("")
+}
+
+/*
 var seen []string = []string{"999999999999999999999999999999999999999999999999999999999999999999999999999999999"}
 var unseen []string = []string{}
 
@@ -215,4 +223,4 @@ func main2() {
 
 	}
 
-}
+}*/

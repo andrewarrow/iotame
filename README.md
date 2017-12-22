@@ -1,6 +1,15 @@
 CREATE TABLE transactions (id varchar(81), ts datetime, value bigint, 
                            address varchar(81), PRIMARY KEY (id), KEY (address), KEY (ts));
 
+CREATE TABLE nodes (id varchar(81), lastPingAt datetime, 
+                    connection_type varchar(81) default 'tcp', PRIMARY KEY (id));
+
+insert into nodes (id) values ('iota.bitfinex.com:80');
+insert into nodes (id) values ('176.9.3.149:14265');
+insert into nodes (id) values ('wallets.iotamexico.com:80'); 
+insert into nodes (id) values ('iotatoken.nl:14265');
+insert into nodes (id) values ('iotanode.us:443');
+
 #or http://176.9.3.149:14265
 # 1.4.1.2
 # 1.4.1.4

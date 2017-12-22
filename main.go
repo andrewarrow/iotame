@@ -11,7 +11,7 @@ var unseen []string = []string{}
 
 func InsertTx(id string, ts time.Time, value int64, address string) {
 
-	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/iotame?timeout=5s")
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/iotame?timeout=5s")
 	if err != nil {
 		return
 	}
@@ -39,12 +39,14 @@ func follow(node string, api *giota.API) {
 
 func main() {
 	server := "http://iota.bitfinex.com:80"
-	server = "http://176.9.3.149:14265"
+	//server = "http://176.9.3.149:14265"
+	server = "https://iotanode.us:443"
 	api := giota.NewAPI(server, nil)
-	resp, err := api.GetTips()
+	resp, err := api.GetNeighbors()
+	fmt.Println(err)
 	if err == nil {
-		for _, h := range resp.Hashes {
-			follow(string(h), api)
+		for _, n := range resp.Neighbors {
+			fmt.Println(n.ConnectionType, n.Address)
 		}
 	}
 }

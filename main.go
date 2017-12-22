@@ -22,6 +22,19 @@ func InsertTx(id string, ts time.Time, value int64, address string) {
 	defer statement.Close()
 }
 
+func InsertNode(id string, connectionType string) {
+
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/iotame?timeout=5s")
+	if err != nil {
+		return
+	}
+	defer db.Close()
+
+	statement, _ := db.Prepare("insert into nodes (id, connection_type) values (?,?);")
+	statement.Exec(id, connectionType)
+	defer statement.Close()
+}
+
 func follow(node string, api *giota.API) {
 	t, _ := giota.ToTrytes(node)
 	resp, err := api.GetTrytes([]giota.Trytes{t})
@@ -47,6 +60,7 @@ func main() {
 	if err == nil {
 		for _, n := range resp.Neighbors {
 			fmt.Println(n.ConnectionType, n.Address)
+			InsertNode(string(n.Address), n.ConnectionType)
 		}
 	}
 }

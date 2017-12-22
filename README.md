@@ -1,3 +1,5 @@
+http://www.minaandrawos.com/2016/05/14/udp-vs-tcp-in-golang/
+
 CREATE TABLE transactions (id varchar(81), ts datetime, value bigint, 
                            address varchar(81), PRIMARY KEY (id), KEY (address), KEY (ts));
 

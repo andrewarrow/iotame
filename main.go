@@ -5,6 +5,7 @@ import "github.com/iotaledger/giota"
 import "database/sql"
 import "time"
 import _ "github.com/go-sql-driver/mysql"
+import "strings"
 
 var seen []string = []string{"999999999999999999999999999999999999999999999999999999999999999999999999999999999"}
 var unseen []string = []string{}
@@ -44,12 +45,20 @@ func ListNodes() []string {
 	}
 	defer db.Close()
 
-	rows, _ := db.Query("select id,connection_type from nodes;")
+	rows, _ := db.Query("select id,connection_type from nodes where connection_type='tcp';")
 	var id string
 	var connectionType string
 	for rows.Next() {
 		rows.Scan(&id, &connectionType)
-		list = append(list, fmt.Sprintf("http://%s", id))
+		if connectionType == "tcp" {
+			if strings.HasSuffix(id, ":443") {
+				list = append(list, fmt.Sprintf("https://%s", id))
+			} else {
+				list = append(list, fmt.Sprintf("http://%s", id))
+			}
+		} else {
+			list = append(list, fmt.Sprintf("udp://%s", id))
+		}
 	}
 	defer rows.Close()
 	return list
@@ -73,6 +82,16 @@ func follow(node string, api *giota.API) {
 func main() {
 	for _, n := range ListNodes() {
 		fmt.Println(n)
+		api := giota.NewAPI(n, nil)
+		resp, err := api.GetNeighbors()
+		fmt.Println("done")
+		fmt.Println(err)
+		if err == nil {
+			for _, nn := range resp.Neighbors {
+				fmt.Println(nn.ConnectionType, nn.Address)
+				InsertNode(string(nn.Address), nn.ConnectionType)
+			}
+		}
 	}
 }
 

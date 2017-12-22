@@ -1,6 +1,6 @@
 package main
 
-import "fmt"
+//import "fmt"
 
 //import "github.com/iotaledger/giota"
 //import "database/sql"

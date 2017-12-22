@@ -3,8 +3,10 @@ http://www.minaandrawos.com/2016/05/14/udp-vs-tcp-in-golang/
 CREATE TABLE transactions (id varchar(81), ts datetime, value bigint, 
                            address varchar(81), PRIMARY KEY (id), KEY (address), KEY (ts));
 
-CREATE TABLE nodes (id varchar(81), lastPingAt datetime, 
+CREATE TABLE nodes (id varchar(81), connected_at datetime, 
                     connection_type varchar(81) default 'tcp', PRIMARY KEY (id));
+ALTER TABLE nodes add column (app_name varchar(81));
+ALTER TABLE nodes add column (app_version varchar(81));
 
 insert into nodes (id) values ('iota.bitfinex.com:80');
 insert into nodes (id) values ('176.9.3.149:14265');

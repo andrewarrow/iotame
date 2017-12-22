@@ -36,6 +36,19 @@ func InsertNode(id string, connectionType string) {
 	defer statement.Close()
 }
 
+func UpdateNode(id, appName, appVersion string) {
+
+	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/iotame?timeout=5s")
+	if err != nil {
+		return
+	}
+	defer db.Close()
+
+	statement, _ := db.Prepare("update nodes set app_name = ?, app_version = ?, connected_at = now() where id = ?")
+	statement.Exec(appName, appVersion, id)
+	defer statement.Close()
+}
+
 func ListNodes() []string {
 
 	var list []string = []string{}
@@ -80,6 +93,21 @@ func follow(node string, api *giota.API) {
 }
 
 func main() {
+	for _, n := range ListNodes() {
+		//fmt.Println(n)
+		api := giota.NewAPI(n, nil)
+		resp, err := api.GetNodeInfo()
+		if err == nil {
+			//fmt.Println(resp.Neighbors)
+			//fmt.Println(resp.AppVersion)
+			//fmt.Println(resp.AppName)
+			tokens := strings.Split(n, "/")
+			fmt.Println(tokens[2])
+			UpdateNode(resp.AppName, resp.AppVersion, tokens[2])
+		}
+	}
+}
+func main_n() {
 	for _, n := range ListNodes() {
 		fmt.Println(n)
 		api := giota.NewAPI(n, nil)

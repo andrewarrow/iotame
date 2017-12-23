@@ -38,15 +38,15 @@ func main() {
 		if index+243 > len(t) {
 			break
 		}
-		foo := t[index : index+243]
-		fmt.Println(len(foo))
+		foo := t[index : index+81]
+		data := giota.Trytes(foo).Trits()
+		fmt.Println(len(data))
+		b, err := data.Bytes()
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(b)
 		index += 243
 	}
-	data := giota.Trytes(t).Trits()
-	b, err := data.Bytes()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(b)
 
 }

@@ -25,7 +25,7 @@ func Nodes() []map[string]string {
 	}
 	defer db.Close()
 
-	rows, _ := db.Query("select id,connection_type from nodes order by id;")
+	rows, _ := db.Query("select id,connection_type from nodes where connection_type='tcp' order by id;")
 	var id string
 	var connectionType string
 	for rows.Next() {

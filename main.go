@@ -3,6 +3,7 @@ package main
 //import "fmt"
 
 //import "github.com/iotaledger/giota"
+
 //import "database/sql"
 //import "time"
 //import _ "github.com/go-sql-driver/mysql"
@@ -133,20 +134,6 @@ func main_n() {
 	}
 }
 
-func main22() {
-	server := "http://iota.bitfinex.com:80"
-	//server = "http://176.9.3.149:14265"
-	server = "https://iotanode.us:443"
-	api := giota.NewAPI(server, nil)
-	resp, err := api.GetNeighbors()
-	fmt.Println(err)
-	if err == nil {
-		for _, n := range resp.Neighbors {
-			fmt.Println(n.ConnectionType, n.Address)
-			InsertNode(string(n.Address), n.ConnectionType)
-		}
-	}
-}
 
 func main2() {
 	server := "http://iota.bitfinex.com:80"

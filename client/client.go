@@ -2,6 +2,7 @@ package client
 
 import "fmt"
 import "time"
+import "encoding/json"
 import "io/ioutil"
 import "net"
 import "net/http"
@@ -38,11 +39,17 @@ func Connect(node map[string]string) {
 		fmt.Println(err)
 		return
 	}
+	defer resp.Body.Close()
 	bs, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(string(bs))
-	resp.Body.Close()
+	var thing map[string]interface{}
+	err = json.Unmarshal(bs, &thing)
+	fmt.Println(err)
+	items := thing["trytes"].([]interface{})
+	data := items[0].(string)
+	fmt.Println(len(data))
+	fmt.Println(data[55:65])
 }

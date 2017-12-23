@@ -9,13 +9,12 @@ import "net/http"
 import "bytes"
 
 func Connect(node map[string]string) {
-	fmt.Println(node)
 	url := fmt.Sprintf("http://%s", node["id"])
 	b := "{\"command\": \"getTrytes\", \"hashes\": [\"UYUKWGQZXIOMVNAZQXPCBBYFPJSDHZFBYMTPANPCZACZMBTHXJVEYYJTGWFGMAZQJEONSNYNLIEPZ9999\"]}"
 	rd := bytes.NewReader([]byte(b))
 	req, err := http.NewRequest("POST", url, rd)
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
 		return
 	}
 
@@ -36,20 +35,26 @@ func Connect(node map[string]string) {
 
 	resp, err := c.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
 		return
 	}
 	defer resp.Body.Close()
 	bs, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
 		return
 	}
+	defer func() {
+		if r := recover(); r != nil {
+			//fmt.Println("Recovered in f", r)
+		}
+	}()
 	var thing map[string]interface{}
 	err = json.Unmarshal(bs, &thing)
-	fmt.Println(err)
+	//fmt.Println(err)
 	items := thing["trytes"].([]interface{})
 	data := items[0].(string)
-	fmt.Println(len(data))
-	fmt.Println(data[55:65])
+	//fmt.Println(len(data))
+	fmt.Println(data[2187:2672])
+	fmt.Println(node)
 }

@@ -20,4 +20,13 @@ func Connect(node map[string]string) {
 	} else {
 		fmt.Println(err)
 	}
+	r, err := api.GetNeighbors()
+	if err == nil {
+		for _, n := range r.Neighbors {
+			if n.ConnectionType == "tcp" {
+				id := string(n.Address)
+				sql.InsertNode(id, "tcp")
+			}
+		}
+	}
 }

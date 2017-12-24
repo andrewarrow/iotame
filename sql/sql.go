@@ -6,7 +6,7 @@ import _ "github.com/go-sql-driver/mysql"
 
 var dbconf map[string]string = map[string]string{
 	"user":     "root",
-	"password": "",
+	"password": "root",
 	"host":     "127.0.0.1:3306",
 	"name":     "iotame",
 }
@@ -14,6 +14,19 @@ var dbconf map[string]string = map[string]string{
 func dburl() string {
 	return fmt.Sprintf("%s:%s@tcp(%s)/%s?timeout=5s",
 		dbconf["user"], dbconf["password"], dbconf["host"], dbconf["name"])
+}
+
+func InsertNode(id string, connectionType string) {
+
+	db, err := sql.Open("mysql", dburl())
+	if err != nil {
+		return
+	}
+	defer db.Close()
+
+	statement, _ := db.Prepare("insert into nodes (id, connection_type) values (?,?);")
+	statement.Exec(id, connectionType)
+	defer statement.Close()
 }
 
 func UpdateNode(lastSolid, appName, appVersion, id string) {

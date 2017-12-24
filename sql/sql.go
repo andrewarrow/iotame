@@ -16,6 +16,19 @@ func dburl() string {
 		dbconf["user"], dbconf["password"], dbconf["host"], dbconf["name"])
 }
 
+func UpdateNode(lastSolid, appName, appVersion, id string) {
+
+	db, err := sql.Open("mysql", dburl())
+	if err != nil {
+		return
+	}
+	defer db.Close()
+
+	statement, _ := db.Prepare("update nodes set last_solid = ?, app_name = ?, app_version = ?, connected_at = now() where id = ?")
+	statement.Exec(lastSolid, appName, appVersion, id)
+	defer statement.Close()
+}
+
 func Nodes() []map[string]string {
 	list := []map[string]string{}
 

@@ -1,4 +1,64 @@
 
+just like the real itoa we start with 2,779,530,283,277,761 total coins in circulation.
+
+to get things started we made
+
+1,151,449 transactions that created 1,151,449 fresh new accounts each with 2,413,941,289 coins.
+
+With me so far? "In the begingin (think genesis) there was just 1 account with all 2,779,530,283,277,761 coins. But since I want friends to enjoy this wealth with me, I split it into 1,151,449 accounts.
+
+So there is 1 root node to our tangle that started on christmas day Dec 25, 2017.
+
+And there are 1,151,449 transactions that point to this root node and each one is by definition confirmed.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    HTTP control / API port (no default port number)
+    TCP neighbor port (default tcp 15600)
+    UDP neighbor port (default udp 14600)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  1815  curl "https://iotasupport.com/providers.json" | jq
  1816  curl https://static.iota.org/providers.json
  1817  curl https://static.iota.org/providers.json | jq

@@ -2,6 +2,7 @@ package sql
 
 import "fmt"
 import "database/sql"
+import "strings"
 import _ "github.com/go-sql-driver/mysql"
 
 var dbconf map[string]string = map[string]string{
@@ -29,7 +30,7 @@ func InsertNode(id string, connectionType string) {
 	defer statement.Close()
 }
 
-func UpdateNode(lastSolid, appName, appVersion, id string) {
+func UpdateNode(lastSolidIndex int64, lastSolid, appName, appVersion, id string) {
 
 	db, err := sql.Open("mysql", dburl())
 	if err != nil {
@@ -37,8 +38,8 @@ func UpdateNode(lastSolid, appName, appVersion, id string) {
 	}
 	defer db.Close()
 
-	statement, _ := db.Prepare("update nodes set last_solid = ?, app_name = ?, app_version = ?, connected_at = now() where id = ?")
-	statement.Exec(lastSolid, appName, appVersion, id)
+	statement, _ := db.Prepare("update nodes set last_solid_index = ?, last_solid = ?, app_name = ?, app_version = ?, connected_at = now() where id = ?")
+	statement.Exec(lastSolidIndex, lastSolid, appName, appVersion, id)
 	defer statement.Close()
 }
 
@@ -51,13 +52,19 @@ func Nodes() []map[string]string {
 	}
 	defer db.Close()
 
-	rows, _ := db.Query("select id,connection_type from nodes where connection_type='tcp' order by id;")
+	rows, _ := db.Query("select id,connection_type from nodes where connection_type='tcp' and connected_at is not null order by id;")
 	var id string
 	var connectionType string
 	for rows.Next() {
 		rows.Scan(&id, &connectionType)
+		s := ""
+		if strings.HasSuffix(id, ":443") {
+			s = "s"
+		}
+		url := fmt.Sprintf("http%s://%s", s, id)
 		node := map[string]string{
 			"id":              id,
+			"url":             url,
 			"connection_type": connectionType,
 		}
 		list = append(list, node)

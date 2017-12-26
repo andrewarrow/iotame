@@ -5,7 +5,7 @@ to get things started we made
 
 1,151,449 transactions that created 1,151,449 fresh new accounts each with 2,413,941,289 coins.
 
-With me so far? "In the begingin (think genesis) there was just 1 account with all 2,779,530,283,277,761 coins. But since I want friends to enjoy this wealth with me, I split it into 1,151,449 accounts.
+With me so far? "In the beginning (think genesis) there was just 1 account with all 2,779,530,283,277,761 coins. But since I want friends to enjoy this wealth with me, I split it into 1,151,449 accounts.
 
 So there is 1 root node to our tangle that started on christmas day Dec 25, 2017.
 
@@ -23,6 +23,16 @@ In order to add a new transfer to the end of the tangle, you have to approve 2 o
 This is the magic of how it scales, the more people using the system the better because of this 1 for 2 ratio.
 
 So let's walk through a complete example of finding a genesis account, making a new address, and sending 1,000 coins to this new address.
+
+1. The entire history of this tangle is available at: [url tbd] you can page through the data and pick any genesis account without a password.
+
+2. Generate a new account number which is a string of words from this list [url tdb] placed in random order over 40 characters long. First letter in each word is in caps and the whole thing is case sensitive.
+
+3. If you did steps 1 and 2 above you now have a FROM account number and a TO account number. If you don't, stop and go back. Next, request two unconfirmed transactions from a node like:
+
+   curl https://simplecoin.life/api/give-me-two
+ 
+4. 
 
 
 

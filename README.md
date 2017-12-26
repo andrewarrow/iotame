@@ -11,6 +11,19 @@ So there is 1 root node to our tangle that started on christmas day Dec 25, 2017
 
 And there are 1,151,449 transactions that point to this root node and each one is by definition confirmed.
 
+In order to claim the 2 billion coins in these genesis accounts, you don't have to pay any USD 
+or BTC or anything like that. This ICO is different in that it's a free-for-all. Just find a genesis 
+account and then you are welcome to claim that account, protect it with a password, 
+and then start spending coins.
+
+You can keep your 2 billion+ of value in just one account, or start making new transactions and split it up into 10 or 20 or 100 or however many different accounts you want to keep track of.
+
+In order to add a new transfer to the end of the tangle, you have to approve 2 other transactions first.
+
+This is the magic of how it scales, the more people using the system the better because of this 1 for 2 ratio.
+
+So let's walk through a complete example of finding a genesis account, making a new address, and sending 1,000 coins to this new address.
+
 
 
 

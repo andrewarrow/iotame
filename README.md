@@ -31,8 +31,20 @@ So let's walk through a complete example of finding a genesis account, making a 
 3. If you did steps 1 and 2 above you now have a FROM account number and a TO account number. If you don't, stop and go back. Next, request two unconfirmed transactions from a node like:
 
    curl https://simplecoin.life/api/give-me-two
+
+   200 OK
+   {"trunk": "ABC", "branch": "ZBC"}
  
-4. 
+4. Please verify that each of your two are valid, and then send back all 3 transactions to a node like:
+
+   curl -XPOST https://simplecoin.life/ -d '{"command": "attach", ...}'
+
+5. Your transaction is now unconfirmed and will be given to someone else when they ask for two. If you want to see when your transaction goes from unconfirmed to confirmed, you can poll any nodes like:
+
+   curl https://simplecoin.life/ -d '{"command": "balance", ...}'
+
+And see if the balance has increased or decreased. The balance will still be the same until your new transaction is confirmed.
+
 
 
 
